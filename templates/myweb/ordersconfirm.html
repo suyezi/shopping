@@ -1,0 +1,134 @@
+{% extends "myweb/shopbase.html" %}
+
+{% load static from staticfiles %}
+
+{% block "mylink" %}
+<link rel="stylesheet" type="text/css" href="{% static 'myweb/css/cart.css'%}">
+<link rel="stylesheet" type="text/css" href="{% static 'myweb/css/cart-app.css'%}">
+{% endblock %}
+{% block "mainbody" %}
+
+    <!-- 导航 -->
+    <div class="layout-header" id="scroll-wrap">
+    <nav class="navbar navbar-default header hidden-xs hidden-sm">
+      <div class="container clearfix">
+        <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+          <div class="layout-header-logo navbar-left">
+            <a target="_blank" href="{% url 'shopindex' %}" class="layout-header-logo-link" alt="魅族科技">
+              <img src="{% static 'myweb/img/logo.png'%}">
+            </a>
+          </div>
+          <div class="navbar-left">
+            <ol class="breadcrumb">
+              <li class="active">购物车</li>
+              <li>确认订单</li>
+              <li>在线支付</li>
+              <li>完成 </li>
+            </ol>
+          </div>
+        </div>
+      </div>
+    </nav>
+    </div>
+    <!-- 导航 E-->
+    <div class="mainbody cart">
+    <div class="container">
+      
+      <!-- 购物清单信息列表 -->
+      <div class="cart-merchant-list">
+        <div class="cart-merchant">
+          <table class="cart-merchant-body">
+            <tbody>
+              
+                <br>
+                <center>
+                  <h3>确认订单</h3>
+                </center>
+                <br>
+                <h4>收货地址:</h4>
+                <form action="{%  url 'ordersinsert' %}" method="post" >
+                  {% csrf_token %}
+                <table width="1000" border="0" cellpadding="4">
+                    <tr>
+                        <td align="right">收件人：</td>
+                        <td><input disabled type="text" name="linkman" value="{{request.session.linkman}}"/></td>
+                    </tr>
+                    <tr>
+                        <td align="right">地址：</td>
+                        <td>
+                          <input disabled type="text" name="address" value="{{request.session.address}}"/>
+                        </td>
+                    </tr> 
+
+                    <tr>
+                      <td align="right">邮编：</td>
+                        <td>
+                          <input disabled type="text" name="code" value="{{request.session.code}}"/>
+                        </td>
+                    </tr>
+                    <tr>
+                      <td align="right">电话：</td>
+                      <td><input disabled type="text" name="phone" value="{{request.session.phone}}"/></td>
+                    </tr>
+                    <tr>
+                      <td align="right"> 总金额 : ¥ </td>
+                      <td id="totalPrices"></td>
+                    </tr>
+                    <tr>
+                      <td colspan="2" align="center">
+                        <input type="submit" value="确定下单"/>
+                        
+                      </td>      
+                    </tr>
+                  </table>
+    
+                <br/><br/>
+             
+              <h4>购物车信息:</h4>
+            {% for vo in request.session.orderlist.values %}
+              <table>
+              <tr class="cart-product" >
+                <td class="cart-col-prices col-md-1 hidden-xs hidden-sm" price="{% widthratio  vo.price 1 vo.nums %}">
+                  <p>
+                    <span disabled >ID号:{{ vo.id }}</span>
+                  </p>
+                </td>
+                <td class="cart-col-select col-md-2 col-xs-4 col-sm-4">  
+                  <a href="#" class="cart-product-link" target="_blank">
+                    图片:<img src="/static/goods/m_{{ vo.picname }}" disabled class="cart-product-img" alt="{{ vo.goods }}">
+                  </a>
+                </td>
+                <td class="cart-col-name col-md-2 col-xs-8 col-sm-8">
+                  <p>
+                    <span disabled class="cart-product-desc">名称:{{ vo.goods }}</span>
+                  </p>
+                </td>
+                <td class="cart-col-price col-md-2 hidden-xs hidden-sm">
+                  <p>
+                    单价:<span disabled class="cart-product-price">{{ vo.price }}</span>
+                  </p>
+                </td>
+                <td class="cart-col-price col-md-2 hidden-xs hidden-sm">
+                  <p>
+                    <span disabled >数量:{{ vo.nums }}</span>
+                  </p>
+                </td>
+                <td class="cart-col-price col-md-2 hidden-xs hidden-sm">
+                  <p>
+                    小计:<span id = "totals" class="cart-product-price" >{% widthratio  vo.price 1 vo.nums %}</span>
+                  </p>
+                </td>
+              </tr>
+              {% endfor %}
+              </form>
+            </tbody>
+          </table>
+
+        </div>
+      </div><!-- 购物清单信息列表 E-->
+    </div>
+    <script>
+    loadTotal3()
+  </script>
+    <!-- 主内容区域 E-->
+{% endblock %}

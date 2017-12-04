@@ -1,0 +1,26 @@
+{% extends "myadmin/base.html" %}
+
+{% block mainbody %}                
+	<h3>
+		订单详情
+	</h3>
+	 {% for i in detaillist %}
+    <ul class="thumbnails">
+        <li class="span3">
+            <div class="thumbnail">
+                <img src="/static/goods/m_{{ i.picname }}" alt="" />
+                <br>
+                <div class="caption">	
+                	<span style = "font:bold 20px '楷体';">商品名称:</span><span style = "font-size:20px;">{{ i.name }}</span>
+                	<br>
+                	<span style = "font:bold 20px '楷体'">商品金额:</span><span style = "font-size:20px;">{{ i.price }}</span>
+                	<br>
+                	<span style = "font:bold 20px '楷体'">购买数量:</span><span style = "font-size:20px;">{{ i.num }}</span>
+                	<br>                                       
+                </div>
+            </div>
+        </li>
+    </ul>
+    {% endfor %}
+	
+{% endblock %}
